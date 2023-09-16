@@ -1,5 +1,7 @@
 import 'package:app/app/models/transaction.dart';
 import 'package:app/app/repositories/transactions.dart';
+import 'package:app/app/theme/colors_theme.dart';
+import 'package:app/app/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -26,8 +28,18 @@ class SplashScreen extends HookConsumerWidget {
                     ref.read(transactionsProvider.notifier).delete(transaction);
                   },
                   child: ListTile(
-                    title: Text(transaction.title),
-                    subtitle: Text(transaction.description ?? ''),
+                    title: Text(
+                      transaction.title,
+                      style: context.textStyles.textRegular.copyWith(
+                        color: ColorsApp.instance.textWhite,
+                      ),
+                    ),
+                    subtitle: Text(
+                      transaction.description ?? '',
+                      style: context.textStyles.textRegular.copyWith(
+                        color: ColorsApp.instance.textWhite,
+                      ),
+                    ),
                   ),
                 );
               },

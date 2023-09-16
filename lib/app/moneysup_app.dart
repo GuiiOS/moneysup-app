@@ -1,4 +1,6 @@
 import 'package:app/app/screens/splash_screen.dart';
+import 'package:app/app/statics/routes.dart';
+import 'package:app/app/theme/config_theme.dart';
 import 'package:flutter/material.dart';
 
 class MoneysupApp extends StatelessWidget {
@@ -8,11 +10,10 @@ class MoneysupApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'moneysup',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const SplashScreen(),
+      theme: ThemeConfig.theme,
+      routes: {
+        Routes.splashScreen: (context) => const SplashScreen(),
+      },
     );
   }
 }
