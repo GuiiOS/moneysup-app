@@ -12,7 +12,7 @@ class MoneysupApp extends StatelessWidget {
       title: 'moneysup',
       theme: ThemeConfig.theme,
       routes: {
-        Routes.splashScreen: (context) => const SplashScreen(),
+        Routes.splashScreen: (context) => SplashScreen(),
       },
     );
   }

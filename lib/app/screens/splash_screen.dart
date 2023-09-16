@@ -1,66 +1,51 @@
-import 'package:app/app/models/transaction.dart';
-import 'package:app/app/repositories/transactions.dart';
+import 'package:app/app/components/splash_buttons.dart';
 import 'package:app/app/theme/colors_theme.dart';
 import 'package:app/app/theme/text_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SplashScreen extends HookConsumerWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    List<Transaction> transactions = ref.watch(transactionsProvider);
+  Widget build(BuildContext context) {
+    final ColorsApp colors = ColorsApp.instance;
+    final TextStyles text = TextStyles.instance;
 
     return Scaffold(
-      body: LayoutBuilder(
-        builder: (context, size) {
-          return SizedBox(
-            height: size.maxHeight,
-            width: size.maxWidth,
-            child: ListView.builder(
-              itemCount: transactions.length,
-              itemBuilder: (context, index) {
-                final transaction = transactions[index];
-
-                return GestureDetector(
-                  onTap: () {
-                    ref.read(transactionsProvider.notifier).delete(transaction);
-                  },
-                  child: ListTile(
-                    title: Text(
-                      transaction.title,
-                      style: context.textStyles.textRegular.copyWith(
-                        color: ColorsApp.instance.textWhite,
-                      ),
-                    ),
-                    subtitle: Text(
-                      transaction.description ?? '',
-                      style: context.textStyles.textRegular.copyWith(
-                        color: ColorsApp.instance.textWhite,
-                      ),
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, size) {
+            return Container(
+              padding: EdgeInsets.only(
+                top: size.maxHeight * .1,
+                bottom: 32,
+                right: 32,
+                left: 32,
+              ),
+              height: size.maxHeight,
+              width: size.maxWidth,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'moneysup',
+                    textAlign: TextAlign.center,
+                    style: text.textExtraBold.copyWith(
+                      fontSize: 64,
+                      color: colors.textWhite,
                     ),
                   ),
-                );
-              },
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          ref.read(transactionsProvider.notifier).add(
-                Transaction(
-                  title: 'Salário',
-                  description: 'b',
-                  value: 1500.00,
-                  date: DateTime.now(),
-                  type: 'revenue',
-                  categorie: 'wage',
-                ),
-              );
-        },
-        child: const Icon(Icons.add),
+                  SplashButtons(
+                    modalHeight: size.maxHeight * .4,
+                    width: size.maxWidth,
+                  )
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
