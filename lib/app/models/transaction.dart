@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 @immutable
 class Transaction {
+  final int? id;
   final String title;
   final String? description;
   final double value;
@@ -10,6 +11,7 @@ class Transaction {
   final String categorie;
 
   const Transaction({
+    required this.id,
     required this.title,
     required this.description,
     required this.value,
@@ -19,6 +21,7 @@ class Transaction {
   });
 
   Transaction copyWith({
+    int? id,
     String? title,
     String? description,
     double? value,
@@ -27,6 +30,7 @@ class Transaction {
     String? categorie,
   }) {
     return Transaction(
+      id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       value: value ?? this.value,

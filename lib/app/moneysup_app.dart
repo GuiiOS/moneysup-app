@@ -1,3 +1,5 @@
+import 'package:app/app/screens/auth_or_not_screen.dart';
+import 'package:app/app/screens/dashboard_screen.dart';
 import 'package:app/app/screens/splash_screen.dart';
 import 'package:app/app/statics/routes.dart';
 import 'package:app/app/theme/config_theme.dart';
@@ -12,7 +14,9 @@ class MoneysupApp extends StatelessWidget {
       title: 'moneysup',
       theme: ThemeConfig.theme,
       routes: {
-        Routes.splashScreen: (context) => SplashScreen(),
+        Routes.mainScreen: (context) => const AuthOrHomePage(),
+        Routes.splashScreen: (context) => const SplashScreen(),
+        Routes.dashboardScreen: (context) => const DashboardScreen(),
       },
     );
   }
