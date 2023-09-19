@@ -1,3 +1,4 @@
+import 'package:app/app/models/transaction.dart';
 import 'package:app/app/models/user.dart';
 import 'package:app/app/moneysup_app.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,10 @@ void main() async {
   Hive.initFlutter();
 
   Hive.registerAdapter<User>(UserAdapter());
+  Hive.registerAdapter<Transaction>(TransactionAdapter());
 
   await Hive.openBox<User>('user_db');
+  await Hive.openBox<Transaction>('transaction_db');
 
   runApp(const ProviderScope(child: MoneysupApp()));
 }

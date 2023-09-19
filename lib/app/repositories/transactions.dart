@@ -1,22 +1,50 @@
+import 'dart:developer';
+
 import 'package:app/app/models/transaction.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-class TransactionsRepository extends StateNotifier<List<Transaction>> {
-  TransactionsRepository() : super([]);
+class TransactionsRepository with ChangeNotifier {
+  final db = Hive.box<Transaction>('transaction_db');
 
-  void add(Transaction transaction) {
-    state = [...state, transaction];
+  void getData() {
+    transactions;
   }
 
-  void delete(Transaction transaction) {
-    state = [
-      for (final tr in state)
-        if (tr != transaction) tr,
-    ];
+  List<Transaction> get transactions {
+    return db.values.toList();
+  }
+
+  List<Transaction> get recentTransactions => [...transactions.sublist(0, 5)];
+
+  List<Transaction> get revenueTransactions =>
+      [...transactions.where((tr) => tr.type == "revenue")];
+
+  List<Transaction> get expenseTransactions =>
+      [...transactions.where((tr) => tr.type == "expense")];
+
+  double get revenue => revenueTransactions.fold(
+      0, (previousValue, element) => previousValue + element.value);
+
+  double get expense => expenseTransactions.fold(
+      0, (previousValue, element) => previousValue + element.value);
+
+  double get balance => revenue - expense;
+
+  void addTransaction(Transaction transaction) {
+    try {
+      transactions.add(transaction);
+      db.add(transaction);
+    } catch (e) {
+      log('deu ruim: $e');
+    }
+
+    notifyListeners();
   }
 }
 
-final transactionsProvider =
-    StateNotifierProvider<TransactionsRepository, List<Transaction>>(
-  (ref) => TransactionsRepository(),
-);
+final transactionProvider =
+    ChangeNotifierProvider<TransactionsRepository>((ref) {
+  return TransactionsRepository();
+});

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:hive/hive.dart';
 
 part 'user.g.dart';
@@ -31,21 +33,23 @@ class User extends HiveObject {
     required this.token,
   });
 
-  User copyWith({
-    int? id,
-    String? nickName,
-    String? email,
-    String? createdAt,
-    String? updatedAt,
-    String? token,
-  }) {
-    return User(
-      id: id ?? this.id,
-      nickName: nickName ?? this.nickName,
-      email: email ?? this.email,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      token: token ?? this.token,
-    );
-  }
+  String toJson() => json.encode(toMap());
+
+  factory User.fromMap(Map<String, dynamic> json) => User(
+        id: json["id"] ? int.parse(json["id"]) : null,
+        nickName: json["nickName"] ? json["nickName"] : '',
+        email: json["email"] ? json["email"] : null,
+        createdAt: json["createdAt"] ? json["createdAt"] : null,
+        updatedAt: json["updatedAt"] ? json["updatedAt"] : null,
+        token: json["token"] ? json["token"] : null,
+      );
+
+  Map<String, dynamic> toMap() => {
+        "id": id,
+        "nickName": nickName,
+        "email": email,
+        "createdAt": createdAt,
+        "updatedAt": updatedAt,
+        "token": token,
+      };
 }
